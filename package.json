@@ -1,0 +1,12 @@
+{
+  "name": "excalidraw-bun",
+  "private": true,
+  "scripts": {
+    "build:frontend": "cd frontend && bun install && bun run build",
+    "build:server": "cd backend && bun run build.ts",
+    "build": "bun run build:frontend && bun run build:server",
+    "build:mac-arm": "TARGET=bun-darwin-arm64 bun run build:server",
+    "build:mac-intel": "TARGET=bun-darwin-x64 bun run build:server",
+    "start": "bun run backend/server.ts"
+  }
+}

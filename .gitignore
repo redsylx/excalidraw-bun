@@ -1,0 +1,38 @@
+# ── Dependencies ───────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+
+# ── Build output ───────────────────────────────────────────────
+frontend/dist/
+dist/
+
+# ── Compiled binaries (build from source via Makefile) ─────────
+out/
+
+# ── Backend generated files ────────────────────────────────────
+backend/public/
+backend/files.embed.ts
+
+# ── User data / drawings (server generates at runtime) ─────────
+backend/drawings/
+drawings/
+
+# ── Environment / secrets ──────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── OS files ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ── IDE / editor ───────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-*
+
+# ── Logs ───────────────────────────────────────────────────────
+*.log

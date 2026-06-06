@@ -1,0 +1,104 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+}
+
+.status-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+}
+
+.dashboard {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 { font-size: 24px; font-weight: 700; }
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #5b8def;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background: #4a7de8; }
+
+.project-list { display: flex; flex-direction: column; gap: 8px; }
+
+.project-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #16213e;
+  border-radius: 8px;
+}
+
+.project-card:hover { background: #1c2a4a; }
+
+.project-link {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.project-link:hover { color: #5b8def; }
+
+.btn-delete {
+  background: none;
+  border: 1px solid #555;
+  color: #999;
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete:hover { border-color: #e74c3c; color: #e74c3c; }
+
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+  flex-shrink: 0;
+}
+
+.back-link { color: #5b8def; text-decoration: none; font-size: 14px; }
+
+.project-name { font-weight: 600; font-size: 16px; flex: 1; }
+
+.save-status { font-size: 12px; }
+.save-status--saving { color: #f0ad4e; }
+.save-status--error { color: #e74c3c; }
+
+.excalidraw-wrapper { flex: 1; overflow: hidden; }
