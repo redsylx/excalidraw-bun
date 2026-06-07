@@ -16,6 +16,10 @@ export default function Editor() {
   const unsubRef = useRef<(() => void) | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
+  const [headerVisible, setHeaderVisible] = useState(true)
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     nameRef.current = name
@@ -58,6 +62,39 @@ export default function Editor() {
       inputRef.current.select()
     }
   }, [isEditing])
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const headerEl = headerRef.current
+      const headerBottom = headerEl ? headerEl.offsetHeight : 50
+      if (e.clientY < 10) {
+        setHeaderVisible(true)
+      } else if (e.clientY > headerBottom + 100) {
+        setHeaderVisible(false)
+      }
+    }
+
+    const handleMouseLeave = () => {
+      setHeaderVisible(false)
+    }
+
+    const handleMouseEnter = () => {
+      setHeaderVisible(true)
+    }
+
+    container.addEventListener('mousemove', handleMouseMove)
+    container.addEventListener('mouseenter', handleMouseEnter)
+    container.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove)
+      container.removeEventListener('mouseenter', handleMouseEnter)
+      container.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [])
 
   useEffect(() => {
     setLoadState('loading')
@@ -114,8 +151,8 @@ export default function Editor() {
 
   if (!ready) {
     return (
-      <div className="editor-container">
-        <div className="editor-header">
+      <div className="editor-container" ref={containerRef}>
+        <div className={`editor-header${headerVisible ? '' : ' editor-header--hidden'}`} ref={headerRef}>
           <Link to="/" className="back-link">←</Link>
           {isEditing ? (
             <input
@@ -138,8 +175,8 @@ export default function Editor() {
   }
 
   return (
-    <div className="editor-container">
-      <div className="editor-header">
+    <div className="editor-container" ref={containerRef}>
+      <div className={`editor-header${headerVisible ? '' : ' editor-header--hidden'}`} ref={headerRef}>
         <Link to="/" className="back-link">←</Link>
         {isEditing ? (
           <input
