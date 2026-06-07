@@ -1,21 +1,63 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Excalidraw, restore } from '@excalidraw/excalidraw'
 import '@excalidraw/excalidraw/index.css'
-import { getDrawing, saveDrawing } from './api'
+import { getDrawing, saveDrawing, renameDrawing } from './api'
 
 export default function Editor() {
   const { name } = useParams<{ name: string }>()
   const [ready, setReady] = useState(false)
   const [data, setData] = useState<any>(null)
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState(name || '')
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>()
   const nameRef = useRef(name)
   const unsubRef = useRef<(() => void) | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     nameRef.current = name
+    setEditValue(name || '')
   }, [name])
+
+  const handleStartEdit = () => {
+    setEditValue(name || '')
+    setIsEditing(true)
+  }
+
+  const handleSave = async () => {
+    const trimmed = editValue.trim()
+    if (!trimmed || trimmed === name) {
+      setIsEditing(false)
+      return
+    }
+    try {
+      await renameDrawing(name!, trimmed)
+      navigate(`/editor/${encodeURIComponent(trimmed)}`, { replace: true })
+      setIsEditing(false)
+    } catch {
+      setIsEditing(false)
+    }
+  }
+
+  const handleCancel = () => {
+    setEditValue(name || '')
+    setIsEditing(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') { e.preventDefault(); handleSave() }
+    if (e.key === 'Escape') { e.preventDefault(); handleCancel() }
+  }
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus()
+      inputRef.current.select()
+    }
+  }, [isEditing])
 
   useEffect(() => {
     setLoadState('loading')
@@ -74,8 +116,19 @@ export default function Editor() {
     return (
       <div className="editor-container">
         <div className="editor-header">
-          <Link to="/" className="back-link">← Dashboard</Link>
-          <span className="project-name">{name}</span>
+          <Link to="/" className="back-link">←</Link>
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              className="project-name-input"
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              onBlur={handleSave}
+              onKeyDown={handleKeyDown}
+            />
+          ) : (
+            <span className="project-name" onClick={handleStartEdit}>{name}</span>
+          )}
         </div>
         <div className="status-center">
           {loadState === 'loading' ? 'Loading...' : loadState === 'error' ? 'Failed to load' : ''}
@@ -87,8 +140,19 @@ export default function Editor() {
   return (
     <div className="editor-container">
       <div className="editor-header">
-        <Link to="/" className="back-link">← Dashboard</Link>
-        <span className="project-name">{name}</span>
+        <Link to="/" className="back-link">←</Link>
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            className="project-name-input"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+          />
+        ) : (
+          <span className="project-name" onClick={handleStartEdit}>{name}</span>
+        )}
       </div>
       <div className="excalidraw-wrapper">
         <Excalidraw

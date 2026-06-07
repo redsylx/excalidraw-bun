@@ -4,8 +4,8 @@ html, body, #root { height: 100%; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #1a1a2e;
-  color: #e0e0e0;
+  background: #000000;
+  color: #ffffff;
 }
 
 .status-center {
@@ -13,7 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #888;
+  color: #ffffff;
 }
 
 .dashboard {
@@ -33,16 +33,14 @@ body {
 
 .btn-primary {
   padding: 10px 20px;
-  background: #5b8def;
-  color: #fff;
+  background: #ffd700;
+  color: #000000;
   border: none;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
-
-.btn-primary:hover { background: #4a7de8; }
 
 .project-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -51,11 +49,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  background: #16213e;
+  background: #1a1a1a;
   border-radius: 8px;
 }
-
-.project-card:hover { background: #1c2a4a; }
 
 .project-link {
   cursor: pointer;
@@ -64,18 +60,16 @@ body {
   flex: 1;
 }
 
-.project-link:hover { color: #5b8def; }
-
 .btn-delete {
-  background: none;
-  border: 1px solid #555;
-  color: #999;
+  background: #5c0000;
+  color: #e74c3c;
   width: 32px; height: 32px;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
   border-radius: 6px;
   cursor: pointer;
 }
-
-.btn-delete:hover { border-color: #e74c3c; color: #e74c3c; }
 
 .editor-container {
   display: flex;
@@ -86,16 +80,40 @@ body {
 .editor-header {
   display: flex;
   align-items: center;
-  gap: 16px;
   padding: 10px 20px;
-  background: #16213e;
-  border-bottom: 1px solid #0f3460;
+  background: #000000;
+  position: relative;
   flex-shrink: 0;
 }
 
-.back-link { color: #5b8def; text-decoration: none; font-size: 14px; }
+.back-link {
+  position: absolute;
+  left: 20px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+}
 
-.project-name { font-weight: 600; font-size: 16px; flex: 1; }
+.project-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffd700;
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+}
+
+.project-name-input {
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffd700;
+  text-align: center;
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
 
 .save-status { font-size: 12px; }
 .save-status--saving { color: #f0ad4e; }

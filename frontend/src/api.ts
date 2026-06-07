@@ -35,3 +35,12 @@ export async function deleteDrawing(name: string): Promise<void> {
   })
   if (!res.ok) throw new Error('Failed to delete')
 }
+
+export async function renameDrawing(oldName: string, newName: string): Promise<void> {
+  const res = await fetch(`${BASE}/drawings/${encodeURIComponent(oldName)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ newName }),
+  })
+  if (!res.ok) throw new Error('Failed to rename')
+}

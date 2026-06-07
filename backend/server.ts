@@ -71,6 +71,21 @@ async function apiRoutes(req: Request, url: URL): Promise<Response | null> {
         return Response.json({ message: 'Saved' })
       } catch { return Response.json({ error: 'Failed to save' }, { status: 500 }) }
     }
+    case 'PATCH': {
+      if (!name) return Response.json({ error: 'Name required' }, { status: 400 })
+      const fp = safePath(name)
+      if (!fp) return Response.json({ error: 'Invalid name' }, { status: 400 })
+      if (!existsSync(fp)) return Response.json({ error: 'Not found' }, { status: 404 })
+      try {
+        const { newName } = await req.json() as { newName: string }
+        if (!newName || !newName.trim()) return Response.json({ error: 'newName required' }, { status: 400 })
+        const newFp = safePath(newName.trim())
+        if (!newFp) return Response.json({ error: 'Invalid newName' }, { status: 400 })
+        if (existsSync(newFp)) return Response.json({ error: 'Already exists' }, { status: 409 })
+        renameSync(fp, newFp)
+        return Response.json({ message: 'Renamed' })
+      } catch { return Response.json({ error: 'Failed to rename' }, { status: 500 }) }
+    }
     case 'DELETE': {
       if (!name) return Response.json({ error: 'Name required' }, { status: 400 })
       const fp = safePath(name)
