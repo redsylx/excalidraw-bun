@@ -24,6 +24,7 @@ export default function Editor() {
   useEffect(() => {
     nameRef.current = name
     setEditValue(name || '')
+    document.title = `EXCD : ${name}`
   }, [name])
 
   const handleStartEdit = () => {
