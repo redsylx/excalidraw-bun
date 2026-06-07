@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, unlinkSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, unlinkSync, renameSync } from 'fs'
 import { join, resolve } from 'path'
 import { files } from './files.embed'
 
@@ -76,7 +76,14 @@ async function apiRoutes(req: Request, url: URL): Promise<Response | null> {
       const fp = safePath(name)
       if (!fp) return Response.json({ error: 'Invalid name' }, { status: 400 })
       if (!existsSync(fp)) return Response.json({ error: 'Not found' }, { status: 404 })
-      try { unlinkSync(fp); return Response.json({ message: 'Deleted' }) }
+      try {
+        const trashDir = join(DRAWINGS_DIR, 'trash')
+        mkdirSync(trashDir, { recursive: true })
+        const now = new Date()
+        const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}-${String(now.getSeconds()).padStart(2,'0')}`
+        renameSync(fp, join(trashDir, `${name}-${ts}.excalidraw`))
+        return Response.json({ message: 'Deleted (soft)' })
+      }
       catch { return Response.json({ error: 'Failed to delete' }, { status: 500 }) }
     }
   }
